@@ -1,7 +1,3 @@
-Bien sûr ! Voici une structuration plus détaillée des données pour ton application de gestion de cultures.
-
----
-
 ## **Modélisation des données**
 L'application doit gérer plusieurs entités interconnectées. Voici un schéma logique des relations entre ces entités.
 
