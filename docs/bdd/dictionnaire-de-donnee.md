@@ -1,147 +1,114 @@
-## **Modélisation des données**
-L'application doit gérer plusieurs entités interconnectées. Voici un schéma logique des relations entre ces entités.
+# Dictionnaire de données de l'application de gestion agricole
 
----
+## 1. Utilisateurs
 
-### **1. Utilisateurs (si multi-utilisateurs)**
-📌 Permet d'identifier l'utilisateur qui gère les terrains.  
-
-#### **Modèle `Utilisateur`**
-| Champ          | Type       | Description |
-|---------------|-----------|-------------|
-| `id`          | UUID      | Identifiant unique de l'utilisateur |
-| `nom`         | String    | Nom complet |
-| `email`       | String    | Adresse e-mail (authentification) |
+### **Table `Utilisateur`**
+| Champ         | Type       | Description |
+|--------------|-----------|-------------|
+| `id`         | UUID      | Identifiant unique de l'utilisateur |
+| `nom`        | String    | Nom complet de l'utilisateur |
+| `email`      | String    | Adresse e-mail de l'utilisateur |
 | `mot_de_passe` | Hash     | Stockage sécurisé du mot de passe |
-| `date_creation` | DateTime | Date d'inscription |
-| `role`        | Enum      | Admin / Agriculteur (si plusieurs utilisateurs) |
+| `date_creation` | DateTime | Date d'inscription de l'utilisateur |
+| `role`       | Text      | Rôle de l'utilisateur (`admin`, `agriculteur`) |
 
 ---
 
-### **2. Terrains**
-📌 Un utilisateur peut avoir plusieurs terrains. Chaque terrain possède un nom, une surface et plusieurs espaces de culture.
+## 2. Terrains
 
-#### **Modèle `Terrain`**
-| Champ        | Type       | Description |
-|-------------|-----------|-------------|
-| `id`        | UUID      | Identifiant unique |
-| `nom`       | String    | Nom ou numéro du terrain |
-| `surface`   | Float     | Surface en hectares ou m² |
-| `utilisateur_id` | UUID | Référence à l'utilisateur propriétaire |
-| `date_creation` | DateTime | Date d'ajout |
+### **Table `Terrain`**
+| Champ         | Type       | Description |
+|--------------|-----------|-------------|
+| `id`         | UUID      | Identifiant unique |
+| `nom`        | String    | Nom ou numéro du terrain |
+| `surface`    | Float     | Surface du terrain en hectares ou mètres carrés |
+| `utilisateur_id` | UUID  | Référence à l'utilisateur propriétaire |
+| `date_creation` | DateTime | Date d'ajout du terrain |
 | `date_modification` | DateTime | Date de dernière mise à jour |
 
 ---
 
-### **3. Espaces de Culture**
-📌 Chaque terrain peut contenir plusieurs espaces de culture (rizières, champs, vergers, potagers). Un espace de culture peut accueillir une ou plusieurs cultures.
+## 3. Espaces de Culture
 
-#### **Modèle `EspaceCulture`**
-| Champ        | Type       | Description |
-|-------------|-----------|-------------|
-| `id`        | UUID      | Identifiant unique |
-| `nom`       | String    | Nom de l’espace (ex: "Rizière Nord") |
-| `type`      | Enum      | `rizière`, `champ`, `verger`, `potager` |
-| `terrain_id` | UUID     | Référence au terrain |
-| `date_creation` | DateTime | Date d'ajout |
+### **Table `EspaceCulture`**
+| Champ         | Type       | Description |
+|--------------|-----------|-------------|
+| `id`         | UUID      | Identifiant unique |
+| `nom`        | String    | Nom de l'espace de culture |
+| `type`       | Text      | Type d'espace (`rizière`, `champ`, `verger`, `potager`) |
+| `terrain_id` | UUID      | Référence au terrain |
+| `date_creation` | DateTime | Date d'ajout de l'espace de culture |
 | `date_modification` | DateTime | Date de dernière mise à jour |
 
 ---
 
-### **4. Planches de Culture (pour les potagers)**
-📌 Les potagers contiennent plusieurs planches de culture, et chaque planche peut accueillir différentes cultures.
+## 4. Planches de Culture
 
-#### **Modèle `PlancheCulture`** *(Uniquement pour les potagers)*
+### **Table `PlancheCulture`** (Uniquement pour les potagers)
 | Champ         | Type      | Description |
 |--------------|----------|-------------|
 | `id`         | UUID     | Identifiant unique |
 | `nom`        | String   | Nom de la planche |
-| `espace_culture_id` | UUID | Référence à l’espace de culture (potager) |
-| `date_creation` | DateTime | Date d'ajout |
+| `espace_culture_id` | UUID | Référence à l'espace de culture |
+| `date_creation` | DateTime | Date d'ajout de la planche de culture |
 
 ---
 
-### **5. Cultures**
-📌 Une culture peut être présente sur un espace de culture ou une planche de culture (si potager).  
+## 5. Cultures
 
-#### **Modèle `Culture`**
+### **Table `Culture`**
 | Champ         | Type      | Description |
 |--------------|----------|-------------|
 | `id`         | UUID     | Identifiant unique |
 | `nom`        | String   | Nom de la culture (ex: Riz, Blé, Tomate) |
-| `variete`    | String   | Variété spécifique (ex: "Riz Jasmin", "Tomate Cœur de Bœuf") |
+| `variete`    | String   | Variété de la culture |
 | `date_plantation` | Date | Date de plantation ou semis |
 | `date_recolte` | Date | Date estimée ou réelle de récolte |
-| `statut` | Enum | `en croissance`, `récolté`, `malade`, etc. |
-| `espace_culture_id` | UUID | Référence à l’espace de culture |
+| `statut` | Text | Statut (`en croissance`, `récolté`, `malade`, etc.) |
+| `espace_culture_id` | UUID | Référence à l'espace de culture |
 | `planche_id` | UUID (nullable) | Référence à la planche (si applicable) |
 | `date_creation` | DateTime | Date d'ajout |
 
 ---
 
-### **6. Actions Agricoles**
-📌 Les actions permettent de suivre les interventions sur les cultures.
+## 6. Actions Agricoles
 
-#### **Modèle `ActionAgricole`**
+### **Table `ActionAgricole`**
 | Champ        | Type       | Description |
 |-------------|-----------|-------------|
 | `id`        | UUID      | Identifiant unique |
-| `type`      | Enum      | `Préparation`, `Plantation`, `Entretien`, `Protection`, `Récolte` |
-| `detail`    | String    | Description (ex: "Arrosage goutte-à-goutte") |
+| `action_personnalisee_id` | UUID | Référence à une action personnalisée |
+| `detail`    | String    | Description spécifique de l'action |
 | `date`      | Date      | Date de réalisation |
 | `commentaire` | Text    | Notes ou observations |
-| `espace_culture_id` | UUID | Référence à l’espace de culture concerné |
+| `espace_culture_id` | UUID | Référence à l'espace de culture |
 | `planche_id` | UUID (nullable) | Référence à la planche (si applicable) |
-| `culture_id` | UUID (nullable) | Référence à une culture spécifique (si applicable) |
+| `culture_id` | UUID (nullable) | Référence à une culture (si applicable) |
 
 ---
 
-### **7. Journal Météo & Observations**
-📌 Pour permettre aux agriculteurs de suivre les conditions météorologiques et l’impact sur leurs cultures.
+## 7. Actions Personnalisées
 
-#### **Modèle `Observation`**
+### **Table `ActionPersonnalisee`**
 | Champ         | Type       | Description |
 |--------------|-----------|-------------|
 | `id`         | UUID      | Identifiant unique |
-| `date`       | Date      | Date d’observation |
+| `nom`        | String    | Nom de l'action |
+| `description` | Text    | Détail sur l'action |
+| `utilisateur_id` | UUID | Référence à l'utilisateur créateur |
+
+---
+
+## 8. Observations et Météo
+
+### **Table `Observation`**
+| Champ         | Type       | Description |
+|--------------|-----------|-------------|
+| `id`         | UUID      | Identifiant unique |
+| `date`       | Date      | Date de l'observation |
 | `temperature` | Float    | Température moyenne du jour |
 | `pluviometrie` | Float   | Précipitations en mm |
 | `ravageurs` | String    | Observations sur les ravageurs |
 | `maladies`  | String    | Problèmes identifiés |
-| `espace_culture_id` | UUID | Référence à l’espace de culture concerné |
+| `espace_culture_id` | UUID | Référence à l'espace de culture |
 | `commentaire` | Text    | Notes supplémentaires |
-
----
-
-### **8. Paramétrage des Actions Personnalisées**
-📌 L’utilisateur doit pouvoir ajouter ses propres actions agricoles.
-
-#### **Modèle `ActionPersonnalisee`**
-| Champ         | Type       | Description |
-|--------------|-----------|-------------|
-| `id`         | UUID      | Identifiant unique |
-| `nom`        | String    | Nom de l’action (ex: "Traitement bio contre pucerons") |
-| `description` | Text    | Détail sur l’action |
-| `categorie`   | Enum    | `Préparation`, `Plantation`, `Entretien`, `Protection`, `Récolte` |
-| `utilisateur_id` | UUID | Référence à l’utilisateur qui l’a créée |
-
----
-
-## **Relations entre les modèles**
-Voici comment ces entités sont liées :
-
-1. **Un `Utilisateur` possède plusieurs `Terrains`**  
-2. **Un `Terrain` possède plusieurs `Espaces de Culture`**  
-3. **Un `Espace de Culture` peut contenir plusieurs `Cultures`**  
-4. **Un `Espace de Culture` peut contenir plusieurs `Planches` (si potager)**  
-5. **Une `Planche` peut contenir plusieurs `Cultures`**  
-6. **Une `Culture` est associée à un `Espace de Culture` ou une `Planche`**  
-7. **Une `Action Agricole` est associée à un `Espace de Culture`, une `Planche` ou une `Culture`**  
-8. **Une `Observation` est liée à un `Espace de Culture`**  
-9. **Un `Utilisateur` peut définir des `Actions Personnalisées`**  
-
----
-
-## **Schéma simplifié**
-📍 *(Terrains → Espaces de Culture → Planches/Cultures → Actions/Observations)*  
-📍 *(Utilisateurs → Paramétrage des Actions Personnalisées)*  
