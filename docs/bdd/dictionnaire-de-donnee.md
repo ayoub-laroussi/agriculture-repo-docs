@@ -73,11 +73,11 @@
 
 ## Relations Merise (Cardinalités et Verbes d'Association)
 
-- Un **User** (1,1) *possède* plusieurs **Land** (0,n)
-- Un **Land** (1,1) *contient* plusieurs **CultivationSpace** (0,n)
-- Un **CultivationSpace** (1,1) *peut avoir* plusieurs **CultivationPlot** (0,n)
-- Un **CultivationSpace** (1,1) *peut accueillir* plusieurs **Crop** (0,n)
-- Une **CultivationPlot** (0,n) *peut contenir* plusieurs **Crop** (0,n)
-- Un **Crop** (1,1) *est cultivé sur* un **CultivationSpace** (1,1) ou une **CultivationPlot** (0,1)
+- Un **User** (1,1) *owns* plusieurs **Land** (0,n)
+- Un **Land** (1,1) *contains* plusieurs **CultivationSpace** (0,n)
+- Un **CultivationSpace** (1,1) *can have* plusieurs **CultivationPlot** (0,n)
+- Un **CultivationSpace** (1,1) *can host* plusieurs **Crop** (0,n)
+- Une **CultivationPlot** (0,n) *can contain* plusieurs **Crop** (0,n)
+- Un **Crop** (1,1) *is cultivated on* un **CultivationSpace** (1,1) ou une **CultivationPlot** (0,1)
 
 Ce dictionnaire de données inclut désormais les relations entre entités selon la méthode Merise avec les cardinalités et verbes d'association.
