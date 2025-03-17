@@ -6,10 +6,10 @@
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique de l'utilisateur | Clé primaire, auto-généré |
-| `nom`        | VARCHAR    | Nom complet de l'utilisateur | Non nul |
-| `email`      | VARCHAR    | Adresse e-mail de l'utilisateur | Unique, non nul |
-| `mot_de_passe` | Hash     | Stockage sécurisé du mot de passe | Non nul |
-| `date_creation` | TIMESTAMP | DATE d'inscription de l'utilisateur | Valeur par défaut: NOW() |
+| `name`        | VARCHAR    | Nom complet de l'utilisateur | Non nul |
+| `email_address`      | VARCHAR    | Adresse e-mail de l'utilisateur | Unique, non nul |
+| `password` | Hash     | Stockage sécurisé du mot de passe | Non nul |
+| `creation_date` | TIMESTAMP | DATE d'inscription de l'utilisateur | Valeur par défaut: NOW() |
 | `role`       | TEXT      | Rôle de l'utilisateur (`admin`, `agriculteur`) | Valeur par défaut: `agriculteur` |
 
 ---
@@ -20,11 +20,11 @@
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique | Clé primaire, auto-généré |
-| `nom`        | VARCHAR    | Nom ou numéro du terrain | Non nul |
-| `surface`    | NUMERIC     | Surface du terrain en hectares ou mètres carrés | Non nul, valeur positive |
+| `name`        | VARCHAR    | Nom ou numéro du terrain | Non nul |
+| `area`    | NUMERIC     | Surface du terrain en hectares ou mètres carrés | Non nul, valeur positive |
 | `id_user` | UUID  | Référence à l'utilisateur propriétaire | Clé étrangère vers `User(id)` |
-| `date_creation` | TIMESTAMP | DATE d'ajout du terrain | Valeur par défaut: NOW() |
-| `date_modification` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
+| `creation_date` | TIMESTAMP | DATE d'ajout du terrain | Valeur par défaut: NOW() |
+| `modification_date` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
 
 ---
 
@@ -34,11 +34,11 @@
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique | Clé primaire, auto-généré |
-| `nom`        | VARCHAR    | Nom de l'espace de culture | Non nul |
+| `name`        | VARCHAR    | Nom de l'espace de culture | Non nul |
 | `type`       | TEXT      | Type d'espace (`rizière`, `champ`, `verger`, `potager`) | Enum limité aux valeurs prédéfinies |
 | `id_land` | UUID      | Référence au terrain | Clé étrangère vers `Land(id)` |
-| `date_creation` | TIMESTAMP | DATE d'ajout de l'espace de culture | Valeur par défaut: NOW() |
-| `date_modification` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
+| `creation_date` | TIMESTAMP | DATE d'ajout de l'espace de culture | Valeur par défaut: NOW() |
+| `modification_date` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
 
 ---
 
@@ -48,9 +48,9 @@
 | Champ         | Type      | Description | Contraintes |
 |--------------|----------|-------------|-------------|
 | `id`         | UUID     | Identifiant unique | Clé primaire, auto-généré |
-| `nom`        | VARCHAR   | Nom de la planche | Non nul |
+| `name`        | VARCHAR   | Nom de la planche | Non nul |
 | `id_cultivation_space` | UUID | Référence à l'espace de culture | Clé étrangère vers `CultivationSpace(id)` |
-| `date_creation` | TIMESTAMP | DATE d'ajout de la planche de culture | Valeur par défaut: NOW() |
+| `creation_date` | TIMESTAMP | DATE d'ajout de la planche de culture | Valeur par défaut: NOW() |
 
 ---
 
@@ -60,14 +60,14 @@
 | Champ         | Type      | Description | Contraintes |
 |--------------|----------|-------------|-------------|
 | `id`         | UUID     | Identifiant unique | Clé primaire, auto-généré |
-| `nom`        | VARCHAR   | Nom de la culture | Non nul |
-| `variete`    | VARCHAR   | Variété de la culture | Nullable |
-| `date_plantation` | DATE | DATE de plantation | Non nulle |
-| `date_recolte` | DATE | DATE estimée ou réelle de récolte | Nullable |
-| `statut` | TEXT | Statut (`en croissance`, `récolté`, `malade`, etc.) | Valeur par défaut: `en croissance` |
+| `name`        | VARCHAR   | Nom de la culture | Non nul |
+| `variety`    | VARCHAR   | Variété de la culture | Nullable |
+| `planting_date` | DATE | DATE de plantation | Non nulle |
+| `harvest_date` | DATE | DATE estimée ou réelle de récolte | Nullable |
+| `status` | TEXT | Statut (`en croissance`, `récolté`, `malade`, etc.) | Valeur par défaut: `en croissance` |
 | `id_cultivation_space` | UUID | Référence à l'espace de culture | Clé étrangère vers `CultivationSpace(id)` |
 | `id_cultivation_plot` | UUID (nullable) | Référence à la planche | Clé étrangère vers `CultivationPlot(id)`, nullable |
-| `date_creation` | TIMESTAMP | DATE d'ajout | Valeur par défaut: NOW() |
+| `creation_date` | TIMESTAMP | DATE d'ajout | Valeur par défaut: NOW() |
 
 ---
 
