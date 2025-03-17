@@ -2,7 +2,7 @@
 
 ## 1. Utilisateurs
 
-### **Table `Utilisateur`**
+### **Table `User`**
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique de l'utilisateur | Clé primaire, auto-généré |
@@ -16,47 +16,47 @@
 
 ## 2. Terrains
 
-### **Table `Terrain`**
+### **Table `Land`**
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique | Clé primaire, auto-généré |
 | `nom`        | VARCHAR    | Nom ou numéro du terrain | Non nul |
 | `surface`    | NUMERIC     | Surface du terrain en hectares ou mètres carrés | Non nul, valeur positive |
-| `utilisateur_id` | UUID  | Référence à l'utilisateur propriétaire | Clé étrangère vers `Utilisateur(id)` |
+| `id_user` | UUID  | Référence à l'utilisateur propriétaire | Clé étrangère vers `User(id)` |
 | `date_creation` | TIMESTAMP | DATE d'ajout du terrain | Valeur par défaut: NOW() |
 | `date_modification` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
 
 ---
 
-## 3. Espaces de Culture
+## 3. Espaces de Crop
 
-### **Table `EspaceCulture`**
+### **Table `CultivationSpace`**
 | Champ         | Type       | Description | Contraintes |
 |--------------|-----------|-------------|-------------|
 | `id`         | UUID      | Identifiant unique | Clé primaire, auto-généré |
 | `nom`        | VARCHAR    | Nom de l'espace de culture | Non nul |
 | `type`       | TEXT      | Type d'espace (`rizière`, `champ`, `verger`, `potager`) | Enum limité aux valeurs prédéfinies |
-| `terrain_id` | UUID      | Référence au terrain | Clé étrangère vers `Terrain(id)` |
+| `id_land` | UUID      | Référence au terrain | Clé étrangère vers `Land(id)` |
 | `date_creation` | TIMESTAMP | DATE d'ajout de l'espace de culture | Valeur par défaut: NOW() |
 | `date_modification` | TIMESTAMP | DATE de dernière mise à jour | Valeur par défaut: NOW(), mise à jour automatique |
 
 ---
 
-## 4. Planches de Culture
+## 4. Planches de Crop
 
-### **Table `PlancheCulture`** (Uniquement pour les potagers)
+### **Table `CultivationPlot`** (Uniquement pour les potagers)
 | Champ         | Type      | Description | Contraintes |
 |--------------|----------|-------------|-------------|
 | `id`         | UUID     | Identifiant unique | Clé primaire, auto-généré |
 | `nom`        | VARCHAR   | Nom de la planche | Non nul |
-| `espace_culture_id` | UUID | Référence à l'espace de culture | Clé étrangère vers `EspaceCulture(id)` |
+| `id_cultivation_space` | UUID | Référence à l'espace de culture | Clé étrangère vers `CultivationSpace(id)` |
 | `date_creation` | TIMESTAMP | DATE d'ajout de la planche de culture | Valeur par défaut: NOW() |
 
 ---
 
 ## 5. Cultures
 
-### **Table `Culture`**
+### **Table `Crop`**
 | Champ         | Type      | Description | Contraintes |
 |--------------|----------|-------------|-------------|
 | `id`         | UUID     | Identifiant unique | Clé primaire, auto-généré |
@@ -65,8 +65,8 @@
 | `date_plantation` | DATE | DATE de plantation | Non nulle |
 | `date_recolte` | DATE | DATE estimée ou réelle de récolte | Nullable |
 | `statut` | TEXT | Statut (`en croissance`, `récolté`, `malade`, etc.) | Valeur par défaut: `en croissance` |
-| `espace_culture_id` | UUID | Référence à l'espace de culture | Clé étrangère vers `EspaceCulture(id)` |
-| `planche_id` | UUID (nullable) | Référence à la planche | Clé étrangère vers `PlancheCulture(id)`, nullable |
+| `id_cultivation_space` | UUID | Référence à l'espace de culture | Clé étrangère vers `CultivationSpace(id)` |
+| `id_cultivation_plot` | UUID (nullable) | Référence à la planche | Clé étrangère vers `CultivationPlot(id)`, nullable |
 | `date_creation` | TIMESTAMP | DATE d'ajout | Valeur par défaut: NOW() |
 
 ---
