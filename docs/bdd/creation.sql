@@ -1,5 +1,16 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto; -- Pour générer des UUID
 
+DROP TABLE IF EXISTS crop; 
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS soil_cover;
+DROP TABLE IF EXISTS is_covered;
+DROP TABLE IF EXISTS is_cultivated;
+DROP TABLE IF EXISTS cultivation_spaces;
+DROP TABLE IF EXISTS land;
+DROP TABLE IF EXISTS users;
+
+CREATE ROLE IF NOT EXISTS ${DB_USER} WITH LOGIN PASSWORD ${DB_PASSWORD};
+
 CREATE TABLE crop (
    id_crop UUID DEFAULT gen_random_uuid() PRIMARY KEY,
    crop_commentary TEXT,
