@@ -24,7 +24,7 @@ CREATE TABLE soil_cover (
 
 CREATE TABLE users (
    id_user UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-   email VARCHAR(50) NOT NULL UNIQUE CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+   email VARCHAR(50) NOT NULL UNIQUE,
    username VARCHAR(50) NOT NULL,
    password TEXT NOT NULL,
    users_creation_date TIMESTAMP DEFAULT NOW(),
